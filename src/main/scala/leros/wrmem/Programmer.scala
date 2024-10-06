@@ -14,7 +14,7 @@ import leros.uart._
  * Stops programming upon instruction 0xFFFF (scall 0xFF)
  * Resumes programming once lerosExit flag is raised
  */
-class Programmer(frequency: Long, baudRate: Long, txFile : String) extends Module {
+class Programmer(frequency: Long, baudRate: Long, txFile : String) extends Module with RequireAsyncReset {
   val io = IO(new Bundle {
     val txd = Output(UInt(1.W))
     val lerosExit = Input(Bool())

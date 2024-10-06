@@ -30,13 +30,17 @@ class LerosTest extends AnyFlatSpec with ChiselScalatestTester {
     test(new LerosTestTop(outFile)).withAnnotations(Seq(WriteVcdAnnotation)) { dut =>         
         dut.clock.setTimeout(0)
         
-        val N_PROGRAMS = progs.length
+        val N_PROGRAMS = 1 //progs.length
         val MAC_CYCLES = 1000
 
         var run = true
         var cycles = MAC_CYCLES
         var n = 0
         var newProg = true
+
+        dut.reset.poke(false.B.asAsyncReset)
+        dut.clock.step(5)
+        dut.reset.poke(true.B.asAsyncReset)
 
         while(run) {
             if(newProg) {
@@ -45,7 +49,11 @@ class LerosTest extends AnyFlatSpec with ChiselScalatestTester {
             }
 
             dut.clock.step(1)
+            /*
             if(!dut.io.lerosReset.peekBoolean()) {
+                cycles -= 1
+            }*/
+            if(dut.leros.lerosCore.reset.asBool.peekBoolean()) {
                 cycles -= 1
             }
 

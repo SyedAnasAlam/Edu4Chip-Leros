@@ -17,16 +17,19 @@ import leros.wrmem._
  * After exit flag is raised next test is programmed
 */
 
-class LerosTestTop(programs : String) extends Module {
+class LerosTestTop(programs : String) extends Module with RequireAsyncReset {
   val io = IO(new Bundle {
     val led = Output(UInt(8.W))
 
     val lerosExit = Output(Bool())
     val accu = Output(UInt(32.W))
-    val lerosReset = Output(Bool())
   })
 
-  val programmer = Module(new Programmer(CLOCK_FREQ_HZ, UART_BAUDRATE, programs))
+  val invertReset = ~reset.asBool
+
+  val programmer = withReset(invertReset.asAsyncReset) {
+    Module(new Programmer(CLOCK_FREQ_HZ, UART_BAUDRATE, programs))
+  }
   val leros = Module(new LerosTop(" "))
   
   leros.io.rx := programmer.io.txd
@@ -36,6 +39,5 @@ class LerosTestTop(programs : String) extends Module {
   io.led := leros.io.led  
   io.accu := BoringUtils.bore(leros.lerosCore.accu)
   io.lerosExit := BoringUtils.bore(leros.lerosCore.exit)
-  io.lerosReset := BoringUtils.bore(leros.lerosCore.reset)
 
 }
