@@ -7,7 +7,7 @@ import leros.util.Assembler
 import wrmem._
 import java.io._
 
-class LerosTest extends AnyFlatSpec with ChiselScalatestTester {  
+class WrLerosTest extends AnyFlatSpec with ChiselScalatestTester {  
   val progs = leros.shared.Util.getProgs()
   var binaries = List[List[Int]]()
   val outFile = "binaries/allProgs.bin"

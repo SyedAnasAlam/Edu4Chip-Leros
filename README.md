@@ -21,6 +21,11 @@ git submodule init
 git submodule update
 ```
 
+## Running Test with writeable instruction memory
+To run Leros test that loads instructions from UART into Leros' instruction memory run the test `WrLerosTest` (`src/test/scala/leros/WrLerosTest.scala`). 
+The test will load all programs in `asm/test` sequentially over UART and ensure that each test finishes with 0 in the accumulator. 
+The tests takes around 35 min to run (laptop). Change `N_PROGRAMS` variable in testbench to run fewer test programs. The test will generate a vcd file in `test_run_dir`
+
 ## Questions
 
 See also [TODO.md](TODO.md).
