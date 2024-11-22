@@ -145,8 +145,13 @@ class Leros(prog: String, size: Int = 32, memAddrWidth: Int = 8) extends Module 
     }
 
     is (scall) {
-      exit := RegNext(true.B)
+      switch(decReg.scallArg) {
+        is(SCALL_EXIT.U) {
+            exit := true.B
+        }
+      }
     }
+
   }
 }
 

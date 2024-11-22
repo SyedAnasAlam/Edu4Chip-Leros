@@ -92,4 +92,9 @@ object Constants {
   val xor = 5
   val ld = 6
   val sra = 7
+
+  // system call arguments
+  val SCALL_EXIT = 0x00
+  val SCALL_PROGRAM_FINISH = 0xFF
 }
+
